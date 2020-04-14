@@ -1,5 +1,12 @@
-#!/usr/bin/env perl
-## editors ## (emacs/sublime) -*- coding: utf8-dos; tab-width: 4; mode: perl -*- ## (jEdit) :tabSize=4:indentSize=4:mode=perl: ## (notepad++) vim:tabstop=4:syntax=perl:
+@rem = { ## no critic ( CodeLayout::RequireTidyCode Modules::RequireExplicitPackage Modules::RequireVersionVar TestingAndDebugging::RequireUseStrict TestingAndDebugging::RequireUseWarnings ValuesAndExpressions::ProhibitImplicitNewlines ValuesAndExpressions::RequireInterpolationOfMetachars )
+@rem = q{
+@::#!/usr/bin/perl -w
+@::## editors ## (emacs/sublime) -*- coding: utf8-dos; tab-width: 4; mode: perl -*- ## (jEdit) :tabSize=4:indentSize=4:mode=perl: ## (notepad++) vim:tabstop=4:syntax=perl:
+@set "ErrorLevel=" &:: clear any erroneously saved environment-level %ErrorLevel%
+@call perl -e "" 2>NUL || @echo `perl` is required but missing; see "http://strawberryperl.com" & @title "%COMSPEC%" & @goto _undefined_ 2>NUL || @%COMSPEC% /d/c exit 9009
+@call perl "%~f0" %* &:: "%~f0", instead of "%~0", is required to allow running the script via PATH
+@title "%COMSPEC%" & @goto _undefined_ 2>NUL || @%COMSPEC% /d/c exit %ErrorLevel%   &:: avoid expanding title bug; and exit, returning correct exit value to parent and process
+@rem }}; undef @rem; ## no critic ( Modules::RequireExplicitPackage TestingAndDebugging::RequireUseStrict TestingAndDebugging::RequireUseWarnings )
 
 #   Copyright (c) International Business Machines  Corp., 2002,2012
 #
