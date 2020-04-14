@@ -939,6 +939,10 @@ sub gen_html()
     # Process each subdirectory and collect overview information
     foreach $dir_name (@dir_list)
     {
+        # normalize
+        $dir_name =~ s/\\/\//g;
+        # print "gen_html(): dir_name = $dir_name\n";
+
         ($lines_found, $lines_hit, $fn_found, $fn_hit,
          $br_found, $br_hit)
             = process_dir($dir_name);
@@ -1084,6 +1088,10 @@ sub process_dir($)
     my %testbrhash;
     my @sort_list;
     local *HTML_HANDLE;
+
+    # normalize
+    $abs_dir =~ s/\\/\//g;
+    $rel_dir =~ s/\\/\//g;
 
     # Remove prefix if applicable
     if (!$no_prefix)
@@ -1517,14 +1525,19 @@ sub read_info_file($)
             /^[SK]F:(.*)/ && do
             {
                 # Filename information found
+                my $match = $1;
                 # Retrieve data for new entry
-                $filename = File::Spec->rel2abs($1, $cwd);
+				$filename = File::Spec->rel2abs($match, Cwd::cwd());
 
-                if (!File::Spec->file_name_is_absolute($1) &&
+                # normalize
+                $filename =~ s/\\/\//g if length $filename;
+                # print "read_info_file(): filename = $filename\n";
+
+				if (!File::Spec->file_name_is_absolute($match) &&
                     !$notified_about_relative_paths)
                 {
                     info("Resolved relative source file ".
-                         "path \"$1\" with CWD to ".
+					     "path \"$match\" with CWD to ".
                          "\"$filename\".\n");
                     $notified_about_relative_paths = 1;
                 }
@@ -2381,6 +2394,12 @@ sub get_prefix($@)
     my %prefix;         # mapping: prefix -> sum of lengths
     my $current;            # Temporary iteration variable
 
+    # normalize filenames to use "/"
+    foreach (@filename_list)
+    {
+        s/\\/\//g;
+    }
+
     # Find list of prefixes
     foreach (@filename_list)
     {
@@ -2661,8 +2680,9 @@ sub create_sub_dir($)
 {
     my ($dir) = @_;
 
-    system("mkdir", "-p" ,$dir)
-        and die("ERROR: cannot create directory $dir!\n");
+	# system("mkdir", "-p" ,$dir)
+	File::Path::make_path($dir, { error => \my $aref_errors });
+    if ($aref_errors && @$aref_errors) { die("ERROR: cannot create directory $dir!\n") };
 }
 
 
@@ -2872,8 +2892,9 @@ sub write_css_file()
     if ($css_filename)
     {
         # Simply copy that file
-        system("cp", $css_filename, "gcov.css")
-            and die("ERROR: cannot copy file $css_filename!\n");
+		# system("cp", $css_filename, "gcov.css")
+        File::Copy::copy($css_filename, "gcov.css")
+			or die("ERROR: cannot copy file $css_filename!\n");
         return;
     }
 
