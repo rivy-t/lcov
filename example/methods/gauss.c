@@ -23,7 +23,7 @@
  *    s = (1/2) * 100 * 101 = 5050
  *
  *  A more general form of this formula would be
- *  
+ *
  *    s = (1/2) * (max + min) * (max - min + 1)
  *
  *  which is used in the piece of code below to implement the requested
@@ -37,12 +37,12 @@
 
 int gauss_get_sum (int min, int max)
 {
-	/* This algorithm doesn't work well with invalid range specifications
-	   so we're intercepting them here. */
-	if (max < min)
-	{
-		return 0;
-	}
+    /* This algorithm doesn't work well with invalid range specifications
+       so we're intercepting them here. */
+    if (max < min)
+    {
+        return 0;
+    }
 
-	return (int) ((max + min) * (double) (max - min + 1) / 2);
+    return (int) ((max + min) * (double) (max - min + 1) / 2);
 }

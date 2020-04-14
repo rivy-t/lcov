@@ -52,7 +52,7 @@ Further README contents
 2. Installing LCOV
 ------------------
 The LCOV package is available as either RPM or tarball from:
-     
+
   http://ltp.sourceforge.net/coverage/lcov.php
 
 To install the tarball, unpack it to a directory and run:
@@ -131,5 +131,4 @@ consult the gcov man page.
 See the included man pages for more information on how to use the LCOV tools.
 
 Please email further questions or comments regarding this tool to the
-LTP Mailing list at ltp-coverage@lists.sourceforge.net  
-
+LTP Mailing list at ltp-coverage@lists.sourceforge.net

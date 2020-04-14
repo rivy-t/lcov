@@ -85,7 +85,7 @@ uninstall:
 	bin/install.sh --uninstall lcovrc $(DESTDIR)$(CFG_DIR)/lcovrc
 
 dist: lcov-$(VERSION).tar.gz lcov-$(VERSION)-$(RELEASE).noarch.rpm \
-      lcov-$(VERSION)-$(RELEASE).src.rpm
+	lcov-$(VERSION)-$(RELEASE).src.rpm
 
 lcov-$(VERSION).tar.gz: $(FILES)
 	mkdir $(TMP_DIR)/lcov-$(VERSION)
@@ -113,7 +113,7 @@ rpms: lcov-$(VERSION).tar.gz
 	tar xfz $(TMP_DIR)/SOURCES/lcov-$(VERSION).tar.gz \
 		lcov-$(VERSION)/rpm/lcov.spec
 	rpmbuild --define '_topdir $(TMP_DIR)' \
-		 -ba $(TMP_DIR)/BUILD/lcov-$(VERSION)/rpm/lcov.spec
+		-ba $(TMP_DIR)/BUILD/lcov-$(VERSION)/rpm/lcov.spec
 	mv $(TMP_DIR)/RPMS/noarch/lcov-$(VERSION)-$(RELEASE).noarch.rpm .
 	mv $(TMP_DIR)/SRPMS/lcov-$(VERSION)-$(RELEASE).src.rpm .
 	rm -rf $(TMP_DIR)

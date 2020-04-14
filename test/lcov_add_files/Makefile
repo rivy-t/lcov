@@ -36,7 +36,7 @@ lcov_add_part2:
 	test_run lcov_add_part2 $(ADDTEST) 1 "$(TARGETINFO)" "$(PART1INFO)" "$(PART2INFO)"
 
 lcov_add_concatenated4:
-	# Add coverage file that consists of 4 concatenation of target files 
+	# Add coverage file that consists of 4 concatenation of target files
 	# and reduce counts to 1/4 - output should be the same as input
 	cat $(TARGETINFO) $(TARGETINFO) $(TARGETINFO) $(TARGETINFO) >concatenated.info
 	test_run lcov_add_concatenated4 $(ADDTEST) 0.25 $(TARGETINFO) concatenated.info

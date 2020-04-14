@@ -1,6 +1,6 @@
 /*
  *  methods/iterate.c
- *  
+ *
  *  Calculate the sum of a given range of integer numbers.
  *
  *  This particular method of implementation works by way of brute force,
@@ -18,28 +18,28 @@
 
 int iterate_get_sum (int min, int max)
 {
-	int i, total;
+    int i, total;
 
-	total = 0;
+    total = 0;
 
-	/* This is where we loop over each number in the range, including
-	   both the minimum and the maximum number. */
+    /* This is where we loop over each number in the range, including
+       both the minimum and the maximum number. */
 
-	for (i = min; i <= max; i++)
-	{
-		/* We can detect an overflow by checking whether the new
-		   sum would become negative. */
+    for (i = min; i <= max; i++)
+    {
+        /* We can detect an overflow by checking whether the new
+           sum would become negative. */
 
-		if (total + i < total)
-		{
-			printf ("Error: sum too large!\n");
-			exit (1);
-		}
+        if (total + i < total)
+        {
+            printf ("Error: sum too large!\n");
+            exit (1);
+        }
 
-		/* Everything seems to fit into an int, so continue adding. */
+        /* Everything seems to fit into an int, so continue adding. */
 
-		total += i;
-	}
+        total += i;
+    }
 
-	return total;
+    return total;
 }

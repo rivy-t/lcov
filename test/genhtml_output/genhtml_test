@@ -10,8 +10,8 @@
 
 function die()
 {
-	echo "Error: $@" >&2
-	exit 1
+    echo "Error: $@" >&2
+    exit 1
 }
 
 GENHTMLFLAGS="-t title"
@@ -19,18 +19,18 @@ REFFILE=$1
 shift
 
 if [ -z "$REFFILE" -o -z "$*" ] ; then
-	echo "Usage: $0 <ref-file> <file1> [<file2>...]" >&2
-	exit 2
+    echo "Usage: $0 <ref-file> <file1> [<file2>...]" >&2
+    exit 2
 fi
 
 OUTREF="out_$(basename $REFFILE .info)"
 OUTCOMBINED="out_combined"
 
 $GENHTML $GENHTMLFLAGS "$REFFILE" -o "$OUTREF" || \
-	die "Could not generate HTML for reference file"
+    die "Could not generate HTML for reference file"
 
 $GENHTML $GENHTMLFLAGS "$@" -o "$OUTCOMBINED" || \
-	die "Could not generate HTML for combined files"
+    die "Could not generate HTML for combined files"
 
 diff -ur "$OUTREF" "$OUTCOMBINED" -I "headerValue" || \
-	die "Mismatch in generated output"
+    die "Mismatch in generated output"

@@ -14,7 +14,7 @@ PART2INFO    := $(TOPDIR)part2.info
 PART2COUNTS  := $(TOPDIR)part2.counts
 INFOFILES    := $(ZEROINFO) $(FULLINFO) $(TARGETINFO) $(PART1INFO) $(PART2INFO)
 COUNTFILES   := $(ZEROCOUNTS) $(FULLCOUNTS) $(TARGETCOUNTS) $(PART1COUNTS) \
-		$(PART2COUNTS)
+        $(PART2COUNTS)
 LCOVRC       := $(TOPDIR)lcovrc
 LCOVFLAGS    := --config-file $(LCOVRC)
 SIZE         := small
@@ -28,20 +28,20 @@ export LANG := C
 all: prepare init test exit
 
 init:
-	testsuite_init
+    testsuite_init
 
 exit:
-	testsuite_exit
+    testsuite_exit
 
 prepare: $(INFOFILES) $(COUNTFILES)
 
 clean: clean_common
 
 clean_common:
-	echo "  CLEAN   $(patsubst %/,%,$(RELDIR))"
+    echo "  CLEAN   $(patsubst %/,%,$(RELDIR))"
 
 $(INFOFILES) $(COUNTFILES):
-	cd $(TOPDIR) && mkinfo profiles/$(SIZE) -o src/
+    cd $(TOPDIR) && mkinfo profiles/$(SIZE) -o src/
 
 ifneq ($(V),2)
 .SILENT:

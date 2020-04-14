@@ -20,9 +20,9 @@ GENPNG  := ../bin/genpng
 USE_GENPNG := $(shell $(GENPNG) --help >/dev/null 2>/dev/null; echo $$?)
 
 ifeq ($(USE_GENPNG),0)
-  FRAMES := --frames
+	FRAMES := --frames
 else
-  FRAMES :=
+	FRAMES :=
 endif
 
 .PHONY: clean output test_noargs test_2_to_2000 test_overflow
@@ -48,9 +48,9 @@ output: example descriptions test_noargs test_2_to_2000 test_overflow
 	@echo '*'
 	@echo
 	$(GENHTML) trace_noargs.info trace_args.info trace_overflow.info \
-		   --output-directory output --title "Basic example" \
-		   --show-details --description-file descriptions $(FRAMES) \
-		   --legend
+		--output-directory output --title "Basic example" \
+		--show-details --description-file descriptions $(FRAMES) \
+		--legend
 	@echo
 	@echo '*'
 	@echo '* See '`pwd`/output/index.html
@@ -95,4 +95,3 @@ test_overflow:
 clean:
 	rm -rf *.o *.bb *.bbg *.da *.gcno *.gcda *.info output example \
 	descriptions
-

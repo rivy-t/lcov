@@ -15,10 +15,10 @@ shift
 
 TIME=$(which time 2>/dev/null)
 if [ ! -z "$TIME" ] ; then
-	TIME="$TIME -v -o $TIMEFILE"
-	if ! $TIME true 2>/dev/null ; then
-		TIME=""
-	fi
+    TIME="$TIME -v -o $TIMEFILE"
+    if ! $TIME true 2>/dev/null ; then
+        TIME=""
+    fi
 fi
 
 t_announce "$TESTNAME"
@@ -37,60 +37,60 @@ ELAPSED=
 RESIDENT=
 SIGNAL=
 if [ ! -z "$TIME" ] ; then
-	while read LINE ; do
-		case "$LINE" in
-		"Command terminated by signal"*) SIGNAL=${LINE##* } ;;
-		"Elapsed"*) ELAPSED=$(elapsed_to_ms ${LINE##* }) ;;
-		"Maximum resident"*) RESIDENT=${LINE##* } ;;
-		"Exit status"*) RC=${LINE##* } ;;
-		esac
-	done < "$TIMEFILE"
-	rm -f "$TIMEFILE"
+    while read LINE ; do
+        case "$LINE" in
+        "Command terminated by signal"*) SIGNAL=${LINE##* } ;;
+        "Elapsed"*) ELAPSED=$(elapsed_to_ms ${LINE##* }) ;;
+        "Maximum resident"*) RESIDENT=${LINE##* } ;;
+        "Exit status"*) RC=${LINE##* } ;;
+        esac
+    done < "$TIMEFILE"
+    rm -f "$TIMEFILE"
 fi
 
 t_detail "EXITCODE" "$RC" >>"$LOGFILE"
 
 # Show result
 if [ $RC -eq 0 -a -z "$SIGNAL" ] ; then
-	RESULT="pass"
-	t_pass "$TESTNAME"
+    RESULT="pass"
+    t_pass "$TESTNAME"
 else
-	if [ -z "$SIGNAL" ] ; then
-		RESULT="fail"
-		t_fail "$TESTNAME"
-	else
-		RESULT="kill"
-		t_kill "$TESTNAME"
-	fi
+    if [ -z "$SIGNAL" ] ; then
+        RESULT="fail"
+        t_fail "$TESTNAME"
+    else
+        RESULT="kill"
+        t_kill "$TESTNAME"
+    fi
 fi
 
 if [ ! -z "$SIGNAL" ] ; then
-	t_detail "SIGNAL" "$SIGNAL" >>"$LOGFILE"
+    t_detail "SIGNAL" "$SIGNAL" >>"$LOGFILE"
 fi
 
 if [ ! -z "$ELAPSED" ] ; then
-	echo -n " (time $(($ELAPSED/1000)).$(($ELAPSED%1000/100))s, "
-	echo "elapsed $TESTNAME $ELAPSED" >> "$COUNTFILE"
+    echo -n " (time $(($ELAPSED/1000)).$(($ELAPSED%1000/100))s, "
+    echo "elapsed $TESTNAME $ELAPSED" >> "$COUNTFILE"
 fi
 
 if [ ! -z "$RESIDENT" ] ; then
-	echo -n "mem $(($RESIDENT/1024)).$((($RESIDENT%1024)/100))MB)"
-	echo "resident $TESTNAME $RESIDENT" >> "$COUNTFILE"
+    echo -n "mem $(($RESIDENT/1024)).$((($RESIDENT%1024)/100))MB)"
+    echo "resident $TESTNAME $RESIDENT" >> "$COUNTFILE"
 fi
 
 echo
 
 # Show log excerpt on failure or if requested
 if [ $RC -ne 0 -o "$V" == "1" ] ; then
-	LEN=$(tail -c "+$POS" "$LOGFILE" | wc -l)
-	if [ "$LEN" -gt "$EXCERPTLEN" -a "$V" != "1" ] ; then
-		tail -c "+$POS" "$LOGFILE" | head -n $EXCERPTLEN | t_indent
-		let LEN=$LEN-$EXCERPTLEN
-		echo "    ..."
-		echo "    Skipping $LEN more lines (see $LOGFILE)"
-	else
-		tail -c "+$POS" "$LOGFILE" | t_indent
-	fi
+    LEN=$(tail -c "+$POS" "$LOGFILE" | wc -l)
+    if [ "$LEN" -gt "$EXCERPTLEN" -a "$V" != "1" ] ; then
+        tail -c "+$POS" "$LOGFILE" | head -n $EXCERPTLEN | t_indent
+        let LEN=$LEN-$EXCERPTLEN
+        echo "    ..."
+        echo "    Skipping $LEN more lines (see $LOGFILE)"
+    else
+        tail -c "+$POS" "$LOGFILE" | t_indent
+    fi
 fi
 
 # Log more details

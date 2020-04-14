@@ -11,8 +11,8 @@ SOURCE="$1"
 TARGET="$2"
 
 if [ -z "$SOURCE" -o -z "$TARGET" ] ; then
-	echo "Usage: $0 SOURCE TARGET" >&2
-	exit 1
+    echo "Usage: $0 SOURCE TARGET" >&2
+    exit 1
 fi
 
 [ -d "$SOURCE/.git" ] ; NOGIT=$?
@@ -21,16 +21,16 @@ echo "Copying modification/commit times from $SOURCE to $TARGET"
 
 cd "$SOURCE" || exit 1
 find * -type f | while read FILENAME ; do
-	[ ! -e "$TARGET/$FILENAME" ] && continue
+    [ ! -e "$TARGET/$FILENAME" ] && continue
 
-	# Copy modification time
-	touch -m "$TARGET/$FILENAME" -r "$FILENAME"
+    # Copy modification time
+    touch -m "$TARGET/$FILENAME" -r "$FILENAME"
 
-	[ $NOGIT -eq 1 ] && continue				# No Git
-	git diff --quiet -- "$FILENAME" || continue		# Modified
-	git diff --quiet --cached -- "$FILENAME" || continue	# Modified
+    [ $NOGIT -eq 1 ] && continue                # No Git
+    git diff --quiet -- "$FILENAME" || continue     # Modified
+    git diff --quiet --cached -- "$FILENAME" || continue    # Modified
 
-	# Apply modification time from Git commit time
-	TIME=$(git log --pretty=format:%cd -n 1 --date=iso -- "$FILENAME")
-	[ -n "$TIME" ] && touch -m "$TARGET/$FILENAME" --date "$TIME"
+    # Apply modification time from Git commit time
+    TIME=$(git log --pretty=format:%cd -n 1 --date=iso -- "$FILENAME")
+    [ -n "$TIME" ] && touch -m "$TARGET/$FILENAME" --date "$TIME"
 done
